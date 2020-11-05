@@ -2,6 +2,37 @@ import argparse
 import numpy
 import time
 from Graph import Graph, Vertex
+import sys
+import heapq
+from collections import deque, defaultdict 
+
+
+def readfile(args):
+    if args.data:
+        with args.data as f:
+            first_line = f.readline()
+            num_vertrix = int(first_line.split(" ")[0])
+            num_edge = int(first_line.split(" ")[1])
+            opt = int(first_line.split(" ")[2])
+            graph = defaultdict(list)
+            index = 1
+            for line in f:
+                l = line.split(" ")
+                for i in l:
+                    mst[index].append(int(i))     
+    else:
+        raise FileNotFoundError('Please Inpyut data file')
+    return mst
+
+
+def output(args):
+    if args.out_sol:
+        pass
+    if args.out_trace:
+        pass
+
+
+
 
 parser = argparse.ArgumentParser(description='Test Optimal Solution of MVC')
 parser.add_argument('-inst', type=argparse.FileType('r'), help='Data for Test.', dest = 'data')
@@ -11,34 +42,20 @@ parser.add_argument('-seed', action="store", dest="seed", type=int, help='Random
 parser.add_argument('-out_sol', type=argparse.FileType('w'), dest = 'out_sol')
 parser.add_argument('-out_trace', type=argparse.FileType('w'), dest = 'out_trace')
 args = parser.parse_args()
-
-
-
-if args.data:
-    with args.data as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        opt = int(first_line.split(" ")[2])
-        graph = Graph()
-        '''
-        for line in f:
-            u = int(line.split(" ")[0])
-            v = int(line.split(" ")[1])
-            w = int(line.split(" ")[2])
-            if u not in graph.get_vertices():
-                graph.add_vertex(u)
-            if v not in graph.get_vertices():
-                graph.add_vertex(v)
-            graph.add_edge(u,v, w)
-        '''
-else:
-    raise FileNotFoundError('Please Inpyut data file')
-
-
-if args.out_sol:
+mst = readfile(args)
+if args.alg == 'BnB':
+    pass
+elif args.alg == 'Approx':
+    pass
+elif args.alg == 'LS1':
+    pass
+elif args.alg == 'LS2':
     pass
 
-if args.out_trace:
-    pass
+output(args)
+
+
+
+
+
 
