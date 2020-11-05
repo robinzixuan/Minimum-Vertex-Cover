@@ -1,7 +1,10 @@
 import argparse
 import numpy
 import time
-from Graph import Graph, Vertex
+from BranchAndBound import BranchAndBound
+from Approximate import Approximate
+from LocalSearch1 import LS1
+from LocalSearch2 import LS2
 import sys
 import heapq
 from collections import deque, defaultdict 
@@ -27,11 +30,6 @@ def readfile(args):
     return graph
 
 
-def output(args):
-    if args.out_sol:
-        pass
-    if args.out_trace:
-        pass
 
 
 
@@ -44,18 +42,45 @@ parser.add_argument('-seed', action="store", dest="seed", type=int, help='Random
 parser.add_argument('-out_sol', type=argparse.FileType('w'), dest = 'out_sol')
 parser.add_argument('-out_trace', type=argparse.FileType('w'), dest = 'out_trace')
 args = parser.parse_args()
-mst = readfile(args)
-print(mst)
+graph = readfile(args)
 if args.alg == 'BnB':
-    pass
+    if parser.out_sol and parser.out_trace:
+        BranchAndBound(graph, args.time, args.seed, out_sol = True, out_trace = True)
+    elif parser.out_sol:
+        BranchAndBound(graph, args.time, args.seed, out_sol = True, out_trace = False)
+    elif parser.out_trace:
+        BranchAndBound(graph, args.time, args.seed, out_sol = False, out_trace = True)
+    else:
+        BranchAndBound(graph, args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'Approx':
-    pass
+    if parser.out_sol and parser.out_trace:
+        Approximate(graph, args.time, args.seed, out_sol = True, out_trace = True)
+    elif parser.out_sol:
+        Approximate(graph, args.time, args.seed, out_sol = True, out_trace = False)
+    elif parser.out_trace:
+        Approximate(graph, args.time, args.seed, out_sol = False, out_trace = True)
+    else:
+        Approximate(graph, args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'LS1':
-    pass
+    if parser.out_sol and parser.out_trace:
+        LS1(graph, args.time, args.seed, out_sol = True, out_trace = True)
+    elif parser.out_sol:
+        LS1(graph, args.time, args.seed, out_sol = True, out_trace = False)
+    elif parser.out_trace:
+        LS1(graph, args.time, args.seed, out_sol = False, out_trace = True)
+    else:
+        LS1(graph, args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'LS2':
-    pass
+    if parser.out_sol and parser.out_trace:
+        LS2(graph, args.time, args.seed, out_sol = True, out_trace = True)
+    elif parser.out_sol:
+        LS2(graph, args.time, args.seed, out_sol = True, out_trace = False)
+    elif parser.out_trace:
+        LS2(graph, args.time, args.seed, out_sol = False, out_trace = True)
+    else:
+        LS2(graph, args.time, args.seed, out_sol = False, out_trace = False)
 
-output(args)
+
 
 
 
