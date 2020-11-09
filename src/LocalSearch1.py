@@ -11,9 +11,8 @@ def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
         num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" "
-        )[1])
-        opt = int(first_line.split(" ")[2])
+        num_edge = int(first_line.split(" ")[1])
+        weight = int(first_line.split(" ")[2])
         graph = defaultdict(list)
         vertices = set()
         index = 1
@@ -21,8 +20,8 @@ def readfile(filename):
             l = line.split(" ")
             for i in l:
                 if i  !='\n':
-                    graph[index].append(int(i))
-                    vertices.add(int(i))    
+                    graph[index].append(i)   
+                    vertices.add(i)
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/football.graph')
