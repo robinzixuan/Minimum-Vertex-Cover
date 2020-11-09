@@ -1,11 +1,13 @@
 from collections import deque, defaultdict 
 import time
-def Approximate(graph, vertices, time, seed, out_sol = False, out_trace = False):
+def Approximate(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
     Cover = set()
     best_path = []
-
+    start = max(graph, key = lambda k: len(graph[k]))
     
+
+
 
 
 

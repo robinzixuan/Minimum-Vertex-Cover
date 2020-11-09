@@ -1,5 +1,5 @@
 import time
-def BranchAndBound(graph, vertices, time, seed, out_sol = False, out_trace = False):
+def BranchAndBound(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
     pass
     

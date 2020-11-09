@@ -1,5 +1,5 @@
 import time
-def LS2(graph,vertices, time, seed, out_sol = False, out_trace = False):
+def LS2(graph,vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
     pass
 
