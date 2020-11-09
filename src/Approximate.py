@@ -29,7 +29,7 @@ def Approximate(graph, vertices, cutoff_time, seed, out_sol = False, out_trace =
 
 
 
-
+'''
 def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
@@ -51,3 +51,4 @@ graph, vertices = readfile('../DATA/star2.graph')
 Cover, best_path = Approximate(graph,vertices,  3, 5, out_sol = False, out_trace = False)
 print(Cover)
 #print(best_path)
+'''
