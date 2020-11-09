@@ -18,12 +18,14 @@ def readfile(args):
             num_edge = int(first_line.split(" ")[1])
             opt = int(first_line.split(" ")[2])
             graph = defaultdict(list)
+            vertices = set()
             index = 1
             for line in f:
                 l = line.split(" ")
                 for i in l:
                     if i  !='\n':
-                        graph[index].append(int(i))    
+                        graph[index].append(int(i))   
+                        vertices.add(int(i)) 
                 index += 1 
     else:
         raise FileNotFoundError('Please Inpyut data file')
@@ -45,40 +47,40 @@ args = parser.parse_args()
 graph = readfile(args)
 if args.alg == 'BnB':
     if parser.out_sol and parser.out_trace:
-        BranchAndBound(graph, args.time, args.seed, out_sol = True, out_trace = True)
+        BranchAndBound(graph,vertices, args.time, args.seed, out_sol = True, out_trace = True)
     elif parser.out_sol:
-        BranchAndBound(graph, args.time, args.seed, out_sol = True, out_trace = False)
+        BranchAndBound(graph,vertices, args.time, args.seed, out_sol = True, out_trace = False)
     elif parser.out_trace:
-        BranchAndBound(graph, args.time, args.seed, out_sol = False, out_trace = True)
+        BranchAndBound(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
     else:
-        BranchAndBound(graph, args.time, args.seed, out_sol = False, out_trace = False)
+        BranchAndBound(graph, vertices,  args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'Approx':
     if parser.out_sol and parser.out_trace:
-        Approximate(graph, args.time, args.seed, out_sol = True, out_trace = True)
+        Approximate(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
     elif parser.out_sol:
-        Approximate(graph, args.time, args.seed, out_sol = True, out_trace = False)
+        Approximate(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
     elif parser.out_trace:
-        Approximate(graph, args.time, args.seed, out_sol = False, out_trace = True)
+        Approximate(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
     else:
-        Approximate(graph, args.time, args.seed, out_sol = False, out_trace = False)
+        Approximate(graph,vertices,  args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'LS1':
     if parser.out_sol and parser.out_trace:
-        LS1(graph, args.time, args.seed, out_sol = True, out_trace = True)
+        LS1(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
     elif parser.out_sol:
-        LS1(graph, args.time, args.seed, out_sol = True, out_trace = False)
+        LS1(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
     elif parser.out_trace:
-        LS1(graph, args.time, args.seed, out_sol = False, out_trace = True)
+        LS1(graph,vertices,  args.time, args.seed, out_sol = False, out_trace = True)
     else:
-        LS1(graph, args.time, args.seed, out_sol = False, out_trace = False)
+        LS1(graph, vertices, args.time, args.seed, out_sol = False, out_trace = False)
 elif args.alg == 'LS2':
     if parser.out_sol and parser.out_trace:
-        LS2(graph, args.time, args.seed, out_sol = True, out_trace = True)
+        LS2(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
     elif parser.out_sol:
-        LS2(graph, args.time, args.seed, out_sol = True, out_trace = False)
+        LS2(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
     elif parser.out_trace:
-        LS2(graph, args.time, args.seed, out_sol = False, out_trace = True)
+        LS2(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
     else:
-        LS2(graph, args.time, args.seed, out_sol = False, out_trace = False)
+        LS2(graph, vertices, args.time, args.seed, out_sol = False, out_trace = False)
 
 
 
