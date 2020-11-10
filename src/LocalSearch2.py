@@ -1,5 +1,6 @@
 import time
-def LS2(graph,vertices, cutoff_time, seed, out_sol = False, out_trace = False):
+def LS2_HC(graph,vertices, cutoff_time, seed, out_sol = False, out_trace = False):
+    #HC
     start_time = time.time()
     pass
 
@@ -23,5 +24,5 @@ def readfile(filename):
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/football.graph')
-LS2(graph, vertices, 3, 5, out_sol = False, out_trace = False)
+sol, trace = LS2_HC(graph, vertices, 3, 5)
 '''

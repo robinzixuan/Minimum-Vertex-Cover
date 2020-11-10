@@ -1,5 +1,6 @@
 import time
-def LS1(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
+def LS1_SA(graph, vertices, cutoff_time, seed):
+    #SA
     start_time = time.time()
     pass
 
@@ -25,5 +26,5 @@ def readfile(filename):
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/football.graph')
-LS1(graph,vertices, 3, 5, out_sol = False, out_trace = False)
+sol, trace = LS1_SA(graph,vertices, 3, 5)
 '''

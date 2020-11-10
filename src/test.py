@@ -46,41 +46,45 @@ parser.add_argument('-out_trace', type=argparse.FileType('w'), dest = 'out_trace
 args = parser.parse_args()
 graph = readfile(args)
 if args.alg == 'BnB':
+    sol, trace = BranchAndBound(graph,vertices, args.time, args.seed)
     if parser.out_sol and parser.out_trace:
-        BranchAndBound(graph,vertices, args.time, args.seed, out_sol = True, out_trace = True)
+        pass
     elif parser.out_sol:
-        BranchAndBound(graph,vertices, args.time, args.seed, out_sol = True, out_trace = False)
+        pass
     elif parser.out_trace:
-        BranchAndBound(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
+        pass
     else:
-        BranchAndBound(graph, vertices,  args.time, args.seed, out_sol = False, out_trace = False)
+        pass
 elif args.alg == 'Approx':
+    sol, trace = Approximate(graph, vertices, args.time, args.seed)
     if parser.out_sol and parser.out_trace:
-        Approximate(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
+        pass
     elif parser.out_sol:
-        Approximate(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
+        pass
     elif parser.out_trace:
-        Approximate(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
+        pass
     else:
-        Approximate(graph,vertices,  args.time, args.seed, out_sol = False, out_trace = False)
+        pass
 elif args.alg == 'LS1':
+    sol, trace = LS1_SA(graph, vertices, args.time, args.seed)
     if parser.out_sol and parser.out_trace:
-        LS1(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
+        pass
     elif parser.out_sol:
-        LS1(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
+        pass
     elif parser.out_trace:
-        LS1(graph,vertices,  args.time, args.seed, out_sol = False, out_trace = True)
+        pass
     else:
-        LS1(graph, vertices, args.time, args.seed, out_sol = False, out_trace = False)
+        pass
 elif args.alg == 'LS2':
+    sol, trace = LS2_HC(graph, vertices, args.time, args.seed)
     if parser.out_sol and parser.out_trace:
-        LS2(graph, vertices, args.time, args.seed, out_sol = True, out_trace = True)
+        pass
     elif parser.out_sol:
-        LS2(graph, vertices, args.time, args.seed, out_sol = True, out_trace = False)
+        pass
     elif parser.out_trace:
-        LS2(graph, vertices, args.time, args.seed, out_sol = False, out_trace = True)
+        pass
     else:
-        LS2(graph, vertices, args.time, args.seed, out_sol = False, out_trace = False)
+        pass
 
 
 
