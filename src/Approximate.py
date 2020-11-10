@@ -3,7 +3,7 @@ import time
 def Approximate(graph, vertices, cutoff_time, seed):
     start_time = time.time()
     Cover = set()
-    best_path = []
+    trace = []
     start = max(graph, key = lambda k: len(graph[k]))
     edges = set()
     Cover.add(start)
@@ -14,7 +14,7 @@ def Approximate(graph, vertices, cutoff_time, seed):
             edge = edges.pop()
             v = edge.split('-')[1]
             key =  edge.split('-')[0]
-            best_path.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
+            trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
             graph[int(v)].remove(key)
             graph[int(key)].remove(v)
         start = max(graph, key = lambda k: len(graph[k]))
@@ -22,7 +22,7 @@ def Approximate(graph, vertices, cutoff_time, seed):
         for i in graph[start]:
             edges.add(str(start) +'-' + str(i))
         #print(edges)
-    return Cover, best_path
+    return Cover, trace
 
 
 
@@ -47,9 +47,9 @@ def readfile(filename):
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/star.graph')
-Cover, best_path = Approximate(graph,vertices,  10, 5)
+Cover, trace = Approximate(graph,vertices,  10, 5)
 print(len(Cover))
-print(len(best_path))
+print(len(trace))
 '''
 
 
