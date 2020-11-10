@@ -38,8 +38,11 @@ def writefile(dicts, filename, sol, trace):
     with open(sol_filename,'w') as f:
         f.write(str(len(sol))+'\n')
         f.write(str(sol)[1:-1])
+    f.close()
     with open(trace_filename,'w') as f:
-        pass
+        for i in trace:
+            f.write(i + '\n')
+    f.close()
 
 
 

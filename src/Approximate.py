@@ -12,9 +12,9 @@ def Approximate(graph, vertices, cutoff_time, seed):
     while time.time() - start_time < cutoff_time:
         while edges:
             edge = edges.pop()
-            best_path.append(edge)
             v = edge.split('-')[1]
             key =  edge.split('-')[0]
+            best_path.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
             graph[int(v)].remove(key)
             graph[int(key)].remove(v)
         start = max(graph, key = lambda k: len(graph[k]))
