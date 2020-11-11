@@ -7,6 +7,7 @@ from LocalSearch1 import LS1_SA
 from LocalSearch2 import LS2_HC
 import sys
 import heapq
+import os
 from collections import deque, defaultdict 
 
 
@@ -56,8 +57,13 @@ args = parser.parse_args()
 graph,vertices  = readfile(args)
 
 filename = args.data.name.split('/')[-1]
+filename = filename.split('.')[0]
 filename = filename  + '_' + args.alg + '_' + str(args.time)
-dicts = '../Sol/'
+dicts = os.getcwd()
+if dicts.split('/')[-1] == 'src':
+    dicts = '../Sol/'
+else:
+    dicts = dicts + '/Sol/'
 if args.alg == 'BnB':
     filename +=  '_' + str(args.seed)
     sol, trace = BranchAndBound(graph,vertices, args.time, args.seed)
