@@ -42,11 +42,13 @@ def readfile(filename):
             l = line.split(" ")
             for i in l:
                 if i  !='\n':
+                    if '\n' in i:
+                        i = i.replace('\n','')
                     graph[index].append(i)   
                     vertices.add(i)
             index += 1 
     return graph,vertices
-graph, vertices = readfile('../DATA/star.graph')
+graph, vertices = readfile('../DATA/dummy1.graph')
 Cover, trace = Approximate(graph,vertices,  10, 5)
 print(len(Cover))
 print(len(trace))

@@ -25,6 +25,8 @@ def readfile(args):
                 l = line.split(" ")
                 for i in l:
                     if i  !='\n':
+                        if '\n' in i:
+                            i = i.replace('\n','')
                         graph[index].append(i)   
                         vertices.add(i)
                 index += 1 
