@@ -1,6 +1,6 @@
 from collections import deque, defaultdict 
 import time
-def Approximate(graph, vertices, cutoff_time, seed):
+def Approximate(graph, vertices, cutoff_time):
     start_time = time.time()
     Cover = set()
     trace = []
@@ -14,11 +14,11 @@ def Approximate(graph, vertices, cutoff_time, seed):
             edge = edges.pop()
             v = edge.split('-')[1]
             key =  edge.split('-')[0]
-            trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
             graph[int(v)].remove(key)
             graph[int(key)].remove(v)
         start = max(graph, key = lambda k: len(graph[k]))
         Cover.add(start)#
+        trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
         for i in graph[start]:
             edges.add(str(start) +'-' + str(i))
         #print(edges)
@@ -49,7 +49,7 @@ def readfile(filename):
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/dummy1.graph')
-Cover, trace = Approximate(graph,vertices,  10, 5)
+Cover, trace = Approximate(graph,vertices,  10)
 print(len(Cover))
 print(len(trace))
 '''

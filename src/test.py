@@ -71,7 +71,7 @@ if args.alg == 'BnB':
     sol, trace = BranchAndBound(graph,vertices, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'Approx':
-    sol, trace = Approximate(graph, vertices, args.time, args.seed)
+    sol, trace = Approximate(graph, vertices, args.time)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS1':
     filename +=  '_' + str(args.seed)
