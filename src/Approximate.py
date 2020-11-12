@@ -10,7 +10,8 @@ def Approximate(graph, vertices, cutoff_time):
     Cover.add(start)
     for i in graph[start]:
         edges.add(str(start) +'-' + i)
-    while time.time() - start_time < cutoff_time:
+    while time.time() - start_time < cutoff_time and len(Cover) > size:
+        size = len(Cover)
         while edges:
             edge = edges.pop()
             v = edge.split('-')[1]
@@ -21,7 +22,6 @@ def Approximate(graph, vertices, cutoff_time):
         Cover.add(start)#
         if len(Cover) > size:
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(Cover)))
-            size = len(Cover)
         for i in graph[start]:
             edges.add(str(start) +'-' + str(i))
         #print(edges)
