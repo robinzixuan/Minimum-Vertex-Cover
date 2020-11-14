@@ -10,6 +10,7 @@ from networkx.algorithms.approximation import vertex_cover
 def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
 
     #calculate the initial solution, the following code aims to improve this solution
+    trace = []
     temp = init_vc(graph, vertices)
     vc_solution = []
     for i in temp:
@@ -67,7 +68,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         for i in uncovered_edges:
             costs[i[0]] += 1
 
-    return vc_solution
+    return vc_solution,trace
 
  
 def add_uc_edges(graph, vc_solution, costs, uncovered_edges, costs_index):
@@ -96,23 +97,6 @@ def rem_uc_edges(graph, vc_solution, costs, uncovered_edges, costs_index):
             costs[int(vert)] += 1
     return costs, uncovered_edges
 
-def readfile(filename):
-    with open(filename, "r") as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        weight = int(first_line.split(" ")[2])
-        graph = defaultdict(list)
-        vertices = set()
-        index = 1
-        for line in f:
-            l = line.split(" ")
-            for i in l:
-                if i  !='\n':
-                    graph[index].append(i)   
-                    vertices.add(i)
-            index += 1 
-    return graph,vertices
 
 
 # Heurestic solution found by iteration from max to min degree nodes and removing node if still vertex cover after
@@ -140,8 +124,7 @@ def init_vc(graph, vertices):
     return ret
 
 
-graph, vertices = readfile('../DATA/football.graph')
-solution = HillClimbing(graph, vertices, 60, 1045)
+
 
 
 

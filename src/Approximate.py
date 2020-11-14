@@ -31,30 +31,5 @@ def Approximate(graph, vertices, cutoff_time):
 
 
 
-'''
-def readfile(filename):
-    with open(filename, "r") as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        weight = int(first_line.split(" ")[2])
-        graph = defaultdict(list)
-        vertices = set()
-        index = 1
-        for line in f:
-            l = line.split(" ")
-            for i in l:
-                if i  !='\n':
-                    if '\n' in i:
-                        i = i.replace('\n','')
-                    graph[index].append(i)   
-                    vertices.add(i)
-            index += 1 
-    return graph,vertices
-graph, vertices = readfile('../DATA/dummy1.graph')
-Cover, trace = Approximate(graph,vertices,  10)
-print(len(Cover))
-print(len(trace))
-'''
 
 
