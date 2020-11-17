@@ -34,7 +34,7 @@ def readfile(args):
                 index += 1 
     else:
         raise FileNotFoundError('Please Inpyut data file')
-    return  graph,vertices, number_edge
+    return  graph,vertices, number_edge/2
 
 
 def writefile(dicts, filename, sol, trace):
@@ -77,7 +77,6 @@ elif args.alg == 'Approx':
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS1':
     filename +=  '_' + str(args.seed)
-    print(number_edge)
     sol, trace = LS1_SA(graph, vertices,number_edge, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
