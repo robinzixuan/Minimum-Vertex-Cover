@@ -41,6 +41,34 @@ Using the Algorithm 1: NuMVC
         then w(e) := b  w(e)c for each edge e;
 19  return C;
 '''
+def removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u):
+    # confChange(u) := 0
+    confChange[u] = 0
+    # confChange(z) := 1 for each z 2 N(u);
+    dscores[u] *= -1
+    for neighbor in graph[u]:
+        neighbor = int(neighbor)
+        if neighbor not in C:
+            uncovered_edges.append((u, neighbor))
+            uncovered_edges.append((neighbor, u))
+            confChange[neighbor] = 1
+            dscores[neighbor] += edge_weights[u][neighbor]
+        else:
+            dscores[neighbor] -= edge_weights[u][neighbor]
+def adding(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, vertex):
+    # confChange(z) := 1 for each z 2 N(u);
+        dscores[vertex] *= -1
+        for neighbor in graph[vertex]:
+            neighbor = int(neighbor)
+            if neighbor not in C:
+                uncovered_edges.remove((vertex, neighbor))
+                uncovered_edges.remove((neighbor, vertex))
+                confChange[neighbor] = 1
+                dscores[neighbor] -= edge_weights[vertex][neighbor]
+            else:
+                dscores[neighbor] += edge_weights[vertex][neighbor]
+
+
 
 def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
@@ -80,22 +108,10 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                     u = i
             # C := C\{u}
             C.remove(u)
-            # confChange(u) := 0
-            confChange[u] = 0
-            # confChange(z) := 1 for each z 2 N(u);
-            dscores[u] *= -1
-            for neighbor in graph[u]:
-                neighbor = int(neighbor)
-                if neighbor not in C:
-                    uncovered_edges.append((u, neighbor))
-                    uncovered_edges.append((neighbor, u))
-                    confChange[neighbor] = 1
-                    dscores[neighbor] += edge_weights[u][neighbor]
-                else:
-                    dscores[neighbor] -= edge_weights[u][neighbor]
+            removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
             print (len(C))
-        
 
+        # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
         u = None
         for i in C:
@@ -105,19 +121,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                 u = i
         # C := C\{u}
         C.remove(u)
-        # confChange(u) := 0
-        confChange[u] = 0
-        # confChange(z) := 1 for each z 2 N(u);
-        dscores[u] *= -1
-        for neighbor in graph[u]:
-            neighbor = int(neighbor)
-            if neighbor not in C:
-                uncovered_edges.append((u, neighbor))
-                uncovered_edges.append((neighbor, u))
-                confChange[neighbor] = 1
-                dscores[neighbor] += edge_weights[u][neighbor]
-            else:
-                dscores[neighbor] -= edge_weights[u][neighbor]
+        removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
 
 
 
@@ -131,17 +135,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             vertex = e[1]
         # C := C'U'{v}
         C.append(vertex)
-        # confChange(z) := 1 for each z 2 N(u);
-        dscores[vertex] *= -1
-        for neighbor in graph[vertex]:
-            neighbor = int(neighbor)
-            if neighbor not in C:
-                uncovered_edges.remove((vertex, neighbor))
-                uncovered_edges.remove((neighbor, vertex))
-                confChange[neighbor] = 1
-                dscores[neighbor] -= edge_weights[vertex][neighbor]
-            else:
-                dscores[neighbor] += edge_weights[vertex][neighbor]
+        adding(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, vertex)
         
         # w(e) := w(e) + 1 for each uncovered edge e;
         for x in uncovered_edges:
@@ -195,7 +189,7 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-filename = '../DATA/star.graph'
+filename = '../DATA/football.graph'
 graph, vertices = readfile(filename)
 HillClimbing(graph, vertices, 60, 1045)
 # print ('Solution size is', len(solution))
