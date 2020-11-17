@@ -73,6 +73,7 @@ def adding(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edge
 def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
     uncovered_edges = []
+    trace = []
 
     # initialize edge weights and dscores of vertices
     edge_weights = {}
@@ -90,7 +91,8 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         dscores[int(v)] = 0
         confChange[int(v)] = 1
     # construct C greedily until it is a vertex cover
-    C = init_vc(graph, vertices)
+    timer = time.time()
+    C = init_vc(graph, vertices, timer, trace)
     # C*=C
     C_solution = C.copy()
     # while elapsed time < cutoff do
@@ -108,6 +110,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                     u = i
             # C := C\{u}
             C.remove(u)
+            trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
             print (len(C))
 
@@ -121,6 +124,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                 u = i
         # C := C\{u}
         C.remove(u)
+        # trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
         removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
 
 
@@ -141,11 +145,14 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         for x in uncovered_edges:
             edge_weights[x[1]][x[0]] += 1
             dscores[x[0]] += 1
-    print (len(C))
-    return C_solution
+    # print (len(C))
+    # for i in trace:
+    #     print (i)
+    # print('Solution:', len(C))
+    return C, trace
 
 # Heurestic solution found by iteration from max to min degree nodes and removing node if still vertex cover after
-def init_vc(graph, vertices):
+def init_vc(graph, vertices, start_time, trace):
     # sort the graph based on degree
     pq = PriorityQueue()
     for i in graph:
@@ -189,9 +196,9 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-filename = '../DATA/football.graph'
-graph, vertices = readfile(filename)
-HillClimbing(graph, vertices, 60, 1045)
+# filename = '../DATA/email.graph'
+# graph, vertices = readfile(filename)
+# HillClimbing(graph, vertices, 60, 1045)
 # print ('Solution size is', len(solution))
     
     
