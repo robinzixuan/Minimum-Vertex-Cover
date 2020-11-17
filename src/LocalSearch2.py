@@ -194,6 +194,8 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-graph, vertices = readfile('../DATA/football.graph')
-LS1(graph,vertices, 3, 5, out_sol = False, out_trace = False)
+filename = '../DATA/football.graph'
+graph, vertices = readfile(filename)
+HillClimbing(graph, vertices, 60, 1045)
+# print ('Solution size is', len(solution))
 '''
