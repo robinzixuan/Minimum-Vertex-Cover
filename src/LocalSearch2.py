@@ -1,107 +1,157 @@
 import time
 import copy
+import random
 from collections import deque, defaultdict 
 from queue import PriorityQueue
 from collections import OrderedDict 
-import networkx as nx
-from networkx.algorithms.approximation import vertex_cover
+# import networkx as nx
+# from networkx.algorithms.approximation import vertex_cover
+'''
+Acknowledgement:
 
+This algorithm is based on the paper: "Two New Local Search Strategies for Minimum Vertex Cover"
+by Shaowei Cai, Kaile Su, Abdul Sattar
+
+Using the Algorithm 1: NuMVC
+1 NuMVC (G,cutoff)
+  Input: graph G = (V;E), the cutoff time
+  Output: vertex cover of G
+2 begin
+3    initialize edge weights and dscores of vertices;
+4    initialize the confChange array as an all-1 array;
+5    construct C greedily until it is a vertex cover;
+6    C := C;
+7    while elapsed time < cutoff do
+8       if there is no uncovered edge then
+9           C := C;
+10          remove a vertex with the highest dscore from C;
+11          continue;
+12      choose a vertex u 2 C with the highest dscore,
+        breaking ties in favor of the oldest one;
+13      C := Cnfug, confChange(u) := 0 and
+        confChange(z) := 1 for each z 2 N(u);
+14      choose an uncovered edge e randomly;
+15      choose a vertex v 2 e such that
+        confChange[v] = 1 with higher dscore, breaking
+        ties in favor of the older one;
+16      C := C [ fvg, confChange(z) := 1 for each
+        z 2 N(v);
+17      w(e) := w(e) + 1 for each uncovered edge e;
+18      if w  
+        then w(e) := b  w(e)c for each edge e;
+19  return C;
+'''
 
 def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
-
-    #calculate the initial solution, the following code aims to improve this solution
-    trace = []
-    temp = init_vc(graph, vertices)
-    vc_solution = []
-    for i in temp:
-        vc_solution.append(int(i))
-    vc_solution = sorted(vc_solution)
-    # print (vc_solution)
-
-    #set up variables
     start_time = time.time()
-    uncovered_edges = [] # empty means that "vertex cover is achieved"
-    return_solution = copy.deepcopy(vc_solution)
-    costs = [0]*(len(vertices) + 1)
-    init_sol_length = len(vc_solution)
+    uncovered_edges = []
 
-    #climbing
+    # initialize edge weights and dscores of vertices
+    edge_weights = {}
+    for v in vertices:
+        v = int(v)
+        neighbors = graph[v]
+        temp_dic = {}
+        for neighbor in neighbors:
+            temp_dic[int(neighbor)] = 1
+        edge_weights[v] = temp_dic
+    dscores = {}
+    # initialize the confChange array as an all-1 array
+    confChange = {}
+    for v in vertices:
+        dscores[int(v)] = 0
+        confChange[int(v)] = 1
+    # construct C greedily until it is a vertex cover
+    C = init_vc(graph, vertices)
+    # C*=C
+    C_solution = C.copy()
+    # while elapsed time < cutoff do
     while(time.time() - start_time < cutoff_time):
-
-        #if reach a vertex cover
+        # if there is no uncovered edge then
         while len(uncovered_edges) == 0:
-            if len(return_solution) > len(vc_solution):
-                return_solution = copy.deepcopy(vc_solution)
-            # if min(costs) == 0:
-            #     costs_index = 1
-            # else:
-            #     costs_index = costs.index(min(costs))
-            # vc_solution.remove(costs_index)
-            # costs, uncovered_edges = add_uc_edges(graph, vc_solution, costs, uncovered_edges, costs_index)
-            temp_max = -1000000
-            temp_node = None
-            for node in vc_solution:
-                if costs[int(node)] > temp_max:
-                    temp_max = costs[int(node)]
-                    temp_node = node
-            vc_solution.remove(temp_node)
-            costs, uncovered_edges = add_uc_edges(graph, vc_solution, costs, uncovered_edges, temp_node)
+            C_solution = C.copy()
+            # remove a vertex with the highest dscore from C
+            max_temp = -float('inf')
+            u = None
+            for i in C:
+                if dscores[i] > max_temp:
+                    max_temp = dscores[i]
+                    # choose a vertex u from C with the highest dscore
+                    u = i
+            # C := C\{u}
+            C.remove(u)
+            # confChange(u) := 0
+            confChange[u] = 0
+            # confChange(z) := 1 for each z 2 N(u);
+            dscores[u] *= -1
+            for neighbor in graph[u]:
+                neighbor = int(neighbor)
+                if neighbor not in C:
+                    uncovered_edges.append((u, neighbor))
+                    uncovered_edges.append((neighbor, u))
+                    confChange[neighbor] = 1
+                    dscores[neighbor] += edge_weights[u][neighbor]
+                else:
+                    dscores[neighbor] -= edge_weights[u][neighbor]
+            print (len(C))
+        
 
-        #if not
-        temp_max = -1000000
-        temp_node = None
-        for node in vc_solution:
-            if costs[int(node)] > temp_max:
-                temp_max = costs[int(node)]
-                temp_node = node
-        vc_solution.remove(temp_node)
-        costs, uncovered_edges = add_uc_edges(graph, vc_solution, costs, uncovered_edges, temp_node)
+        max_temp = -float('inf')
+        u = None
+        for i in C:
+            if dscores[i] > max_temp:
+                max_temp = dscores[i]
+                # choose a vertex u from C with the highest dscore
+                u = i
+        # C := C\{u}
+        C.remove(u)
+        # confChange(u) := 0
+        confChange[u] = 0
+        # confChange(z) := 1 for each z 2 N(u);
+        dscores[u] *= -1
+        for neighbor in graph[u]:
+            neighbor = int(neighbor)
+            if neighbor not in C:
+                uncovered_edges.append((u, neighbor))
+                uncovered_edges.append((neighbor, u))
+                confChange[neighbor] = 1
+                dscores[neighbor] += edge_weights[u][neighbor]
+            else:
+                dscores[neighbor] -= edge_weights[u][neighbor]
 
-        added = None
-        if costs[int(uncovered_edges[0][0])] > costs[int(uncovered_edges[0][1])]:
-            added = uncovered_edges[0][0]
+
+
+        # choose an uncovered edge e randomly
+        e = random.choice(uncovered_edges)
+        # choose a vertex v 2 e such that confChange[v] = 1 with higher dscore
+        vertex = None
+        if dscores[e[0]] > dscores[e[1]]:
+            vertex = e[0]
         else:
-            added = uncovered_edges[0][1]
-        vc_solution.append(added)
-        costs, uncovered_edges = rem_uc_edges(graph, vc_solution, costs, uncovered_edges, added)
-
-        for i in uncovered_edges:
-            costs[i[0]] += 1
-
-    return vc_solution,trace
-
- 
-def add_uc_edges(graph, vc_solution, costs, uncovered_edges, costs_index):
-    costs_index = int(costs_index)
-    costs[costs_index] *= -1
-    for vert in graph[costs_index]:
-        if int(vert) not in vc_solution:
-            uncovered_edges.append((costs_index, int(vert)))
-            uncovered_edges.append((int(vert), costs_index))
-            costs[int(vert)] += 1
-        else:
-            costs[int(vert)] -= 1
-    return costs, uncovered_edges
-
-def rem_uc_edges(graph, vc_solution, costs, uncovered_edges, costs_index):
-    costs_index = int(costs_index)
-    costs[costs_index] *= -1
-    for vert in graph[costs_index]:
-        if int(vert) not in vc_solution:
-            # print (uncovered_edges)
-            # print ((costs_index, int(vert)))
-            uncovered_edges.remove((costs_index, int(vert)))
-            uncovered_edges.remove((int(vert), costs_index))
-            costs[int(vert)] -= 1
-        else:
-            costs[int(vert)] += 1
-    return costs, uncovered_edges
-
-
+            vertex = e[1]
+        # C := C'U'{v}
+        C.append(vertex)
+        # confChange(z) := 1 for each z 2 N(u);
+        dscores[vertex] *= -1
+        for neighbor in graph[vertex]:
+            neighbor = int(neighbor)
+            if neighbor not in C:
+                uncovered_edges.remove((vertex, neighbor))
+                uncovered_edges.remove((neighbor, vertex))
+                confChange[neighbor] = 1
+                dscores[neighbor] -= edge_weights[vertex][neighbor]
+            else:
+                dscores[neighbor] += edge_weights[vertex][neighbor]
+        
+        # w(e) := w(e) + 1 for each uncovered edge e;
+        for x in uncovered_edges:
+            edge_weights[x[1]][x[0]] += 1
+            dscores[x[0]] += 1
+    print (len(C))
+    return C_solution
 
 # Heurestic solution found by iteration from max to min degree nodes and removing node if still vertex cover after
 def init_vc(graph, vertices):
-    vc_solution = []
     # sort the graph based on degree
     pq = PriorityQueue()
     for i in graph:
@@ -111,21 +161,46 @@ def init_vc(graph, vertices):
         index = pq.get()[1]
         neighbor = graph[index]
         VC.append((index, neighbor))
-    VC = VC[::-1] #in descending order
+    # VC = VC[::-1] #in descending order
+    # print(VC)
     uncovered_edges = []
     ret = list(vertices)
+    # print(ret)
     for i in VC:
         overlapped = True
         for neighbor in i[1]:
             if neighbor not in ret:
                 overlapped = False
         if overlapped: ret.remove(str(i[0]))
-    ret = sorted(ret)
-    return ret
+    temp = []
+    for i in ret:
+        temp.append(int(i))
+    temp = sorted(temp)
+    return temp
 
-
-
-
+def readfile(filename):
+    with open(filename, "r") as f:
+        first_line = f.readline()
+        num_vertrix = int(first_line.split(" ")[0])
+        num_edge = int(first_line.split(" ")[1])
+        weight = int(first_line.split(" ")[2])
+        graph = defaultdict(list)
+        vertices = set()
+        index = 1
+        for line in f:
+            l = line.split(" ")
+            for i in l:
+                if i  !='\n':
+                    graph[index].append(i)   
+                    vertices.add(i)
+            index += 1 
+    return graph,vertices
+filename = '../DATA/star.graph'
+graph, vertices = readfile(filename)
+HillClimbing(graph, vertices, 60, 1045)
+# print ('Solution size is', len(solution))
+    
+    
 
 
 '''
