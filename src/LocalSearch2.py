@@ -8,10 +8,8 @@ from collections import OrderedDict
 # from networkx.algorithms.approximation import vertex_cover
 '''
 Acknowledgement:
-
 This algorithm is based on the paper: "Two New Local Search Strategies for Minimum Vertex Cover"
 by Shaowei Cai, Kaile Su, Abdul Sattar
-
 Using the Algorithm 1: NuMVC
 1 NuMVC (G,cutoff)
   Input: graph G = (V;E), the cutoff time
@@ -73,7 +71,6 @@ def adding(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edge
 def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace = False):
     start_time = time.time()
     uncovered_edges = []
-    trace = []
 
     # initialize edge weights and dscores of vertices
     edge_weights = {}
@@ -91,8 +88,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         dscores[int(v)] = 0
         confChange[int(v)] = 1
     # construct C greedily until it is a vertex cover
-    timer = time.time()
-    C = init_vc(graph, vertices, timer, trace)
+    C = init_vc(graph, vertices)
     # C*=C
     C_solution = C.copy()
     # while elapsed time < cutoff do
@@ -110,9 +106,8 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                     u = i
             # C := C\{u}
             C.remove(u)
-            trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
-            print (len(C))
+            #print (len(C))
 
         # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
@@ -124,7 +119,6 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                 u = i
         # C := C\{u}
         C.remove(u)
-        # trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
         removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
 
 
@@ -145,14 +139,11 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         for x in uncovered_edges:
             edge_weights[x[1]][x[0]] += 1
             dscores[x[0]] += 1
-    # print (len(C))
-    # for i in trace:
-    #     print (i)
-    # print('Solution:', len(C))
-    return C, trace
+    print (len(C))
+    return C_solution
 
 # Heurestic solution found by iteration from max to min degree nodes and removing node if still vertex cover after
-def init_vc(graph, vertices, start_time, trace):
+def init_vc(graph, vertices):
     # sort the graph based on degree
     pq = PriorityQueue()
     for i in graph:
@@ -179,27 +170,6 @@ def init_vc(graph, vertices, start_time, trace):
     temp = sorted(temp)
     return temp
 
-def readfile(filename):
-    with open(filename, "r") as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        weight = int(first_line.split(" ")[2])
-        graph = defaultdict(list)
-        vertices = set()
-        index = 1
-        for line in f:
-            l = line.split(" ")
-            for i in l:
-                if i  !='\n':
-                    graph[index].append(i)   
-                    vertices.add(i)
-            index += 1 
-    return graph,vertices
-# filename = '../DATA/email.graph'
-# graph, vertices = readfile(filename)
-# HillClimbing(graph, vertices, 60, 1045)
-# print ('Solution size is', len(solution))
     
     
 
@@ -222,6 +192,8 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-graph, vertices = readfile('../DATA/football.graph')
-LS1(graph,vertices, 3, 5, out_sol = False, out_trace = False)
+filename = '../DATA/football.graph'
+graph, vertices = readfile(filename)
+HillClimbing(graph, vertices, 60, 1045)
+# print ('Solution size is', len(solution))
 '''

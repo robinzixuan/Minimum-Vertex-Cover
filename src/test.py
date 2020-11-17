@@ -21,6 +21,7 @@ def readfile(args):
             graph = defaultdict(list)
             vertices = set()
             index = 1
+            number_edge = 0
             for line in f:
                 l = line.split(" ")
                 for i in l:
@@ -29,10 +30,11 @@ def readfile(args):
                             i = i.replace('\n','')
                         graph[index].append(i)   
                         vertices.add(i)
+                number_edge += len(graph[index])
                 index += 1 
     else:
         raise FileNotFoundError('Please Inpyut data file')
-    return  graph,vertices
+    return  graph,vertices, number_edge/2
 
 
 def writefile(dicts, filename, sol, trace):
@@ -56,7 +58,7 @@ parser.add_argument('-time', action='store', dest = 'time',type=int, help='cutof
 parser.add_argument('-seed', action="store", dest="seed", type=int, help='Random seed')
 
 args = parser.parse_args()
-graph,vertices  = readfile(args)
+graph,vertices, number_edge  = readfile(args)
 
 filename = args.data.name.split('/')[-1]
 filename = filename.split('.')[0]
@@ -75,7 +77,7 @@ elif args.alg == 'Approx':
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS1':
     filename +=  '_' + str(args.seed)
-    sol, trace = LS1_SA(graph, vertices, args.time, args.seed)
+    sol, trace = LS1_SA(graph, vertices,number_edge, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
     filename +=  '_' + str(args.seed)
