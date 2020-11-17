@@ -4,7 +4,7 @@ import time
 from BranchAndBound import BranchAndBound
 from Approximate import Approximate
 from LocalSearch1 import LS1_SA
-from LocalSearch2 import LS2_HC
+from LocalSearch2 import HillClimbing
 import sys
 import heapq
 import os
@@ -79,7 +79,7 @@ elif args.alg == 'LS1':
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
     filename +=  '_' + str(args.seed)
-    sol, trace = LS2_HC(graph, vertices, args.time, args.seed)
+    sol, trace = HillClimbing(graph, vertices, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
     
 
