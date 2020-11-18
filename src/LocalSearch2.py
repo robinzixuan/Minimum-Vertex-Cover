@@ -119,12 +119,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             C.remove(u)
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
-<<<<<<< HEAD
-            print (len(C))
-        counter += 1
-=======
             #print (len(C))
->>>>>>> 73a703230940c0755f9647c4406df0173844a570
 
         # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
