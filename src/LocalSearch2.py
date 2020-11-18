@@ -159,33 +159,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             dscores[x[0]] += 1
     return C, trace
     
-<<<<<<< HEAD
-def readfile(filename):
-    with open(filename, "r") as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        weight = int(first_line.split(" ")[2])
-        graph = defaultdict(list)
-        vertices = set()
-        index = 1
-        for line in f:
-            l = line.split(" ")
-            for i in l:
-                if i  !='\n':
-                    graph[index].append(i)   
-                    vertices.add(i)
-            index += 1 
-    return graph,vertices
-filename = '../DATA/jazz.graph'
-graph, vertices = readfile(filename)
-HillClimbing(graph, vertices, 6000, 1045)
-# print ('Solution size is', len(solution))
-
-
-=======
  
->>>>>>> 73a703230940c0755f9647c4406df0173844a570
 '''
 def readfile(filename):
     with open(filename, "r") as f:
