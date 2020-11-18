@@ -119,8 +119,12 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             C.remove(u)
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
+<<<<<<< HEAD
             print (len(C))
         counter += 1
+=======
+            #print (len(C))
+>>>>>>> 73a703230940c0755f9647c4406df0173844a570
 
         # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
@@ -155,6 +159,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             dscores[x[0]] += 1
     return C, trace
     
+<<<<<<< HEAD
 def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
@@ -178,6 +183,9 @@ HillClimbing(graph, vertices, 6000, 1045)
 # print ('Solution size is', len(solution))
 
 
+=======
+ 
+>>>>>>> 73a703230940c0755f9647c4406df0173844a570
 '''
 def readfile(filename):
     with open(filename, "r") as f:
@@ -196,6 +204,10 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-graph, vertices = readfile('../DATA/football.graph')
-LS1(graph,vertices, 3, 5, out_sol = False, out_trace = False)
+     if '\n' in i:
+                        i = i.replace('\n','')
+
+graph, vertices, num_edge = readfile('../DATA/karate.graph')
+print(graph)
+HillClimbing(graph,vertices, 200, 5, out_sol = False, out_trace = False)
 '''
