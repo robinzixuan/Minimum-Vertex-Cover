@@ -112,7 +112,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             C.remove(u)
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
-            print (len(C))
+            #print (len(C))
 
         # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
@@ -179,32 +179,29 @@ def init_vc(graph, vertices, start_time, trace):
     temp = sorted(temp)
     return temp
 
-# def readfile(filename):
-#     with open(filename, "r") as f:
-#         first_line = f.readline()
-#         num_vertrix = int(first_line.split(" ")[0])
-#         num_edge = int(first_line.split(" ")[1])
-#         weight = int(first_line.split(" ")[2])
-#         graph = defaultdict(list)
-#         vertices = set()
-#         index = 1
-#         for line in f:
-#             l = line.split(" ")
-#             for i in l:
-#                 if i  !='\n':
-#                     graph[index].append(i)   
-#                     vertices.add(i)
-#             index += 1 
-#     return graph,vertices
-# filename = '../DATA/email.graph'
-# graph, vertices = readfile(filename)
-# HillClimbing(graph, vertices, 60, 1045)
-# print ('Solution size is', len(solution))
+''' 
+def readfile(path):
+    with open(path,'r') as f:
+        first_line = f.readline()
+        num_vertrix = int(first_line.split(" ")[0])
+        num_edge = int(first_line.split(" ")[1])
+        weight = int(first_line.split(" ")[2])
+        graph = defaultdict(list)
+        vertices = set()
+        index = 1
+        for line in f:
+            l = line.split(" ")
+            for i in l:
+                if i  !='\n':
+                    if '\n' in i:
+                        i = i.replace('\n','')
+                    graph[index].append(i)   
+                    vertices.add(i)
+            index += 1 
+    return  graph,vertices, num_edge
     
-    
+ 
 
-
-'''
 def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
@@ -222,6 +219,10 @@ def readfile(filename):
                     vertices.add(i)
             index += 1 
     return graph,vertices
-graph, vertices = readfile('../DATA/football.graph')
-LS1(graph,vertices, 3, 5, out_sol = False, out_trace = False)
+     if '\n' in i:
+                        i = i.replace('\n','')
+
+graph, vertices, num_edge = readfile('../DATA/karate.graph')
+print(graph)
+HillClimbing(graph,vertices, 200, 5, out_sol = False, out_trace = False)
 '''

@@ -9,6 +9,8 @@ import sys
 import heapq
 import os
 from collections import deque, defaultdict 
+import multiprocessing as mp
+import ThreadClass
 
 
 def readfile(args):
@@ -21,7 +23,6 @@ def readfile(args):
             graph = defaultdict(list)
             vertices = set()
             index = 1
-            number_edge = 0
             for line in f:
                 l = line.split(" ")
                 for i in l:
@@ -30,11 +31,10 @@ def readfile(args):
                             i = i.replace('\n','')
                         graph[index].append(i)   
                         vertices.add(i)
-                number_edge += len(graph[index])
                 index += 1 
     else:
         raise FileNotFoundError('Please Inpyut data file')
-    return  graph,vertices, number_edge/2
+    return  graph,vertices, num_edge
 
 
 def writefile(dicts, filename, sol, trace):
@@ -81,6 +81,16 @@ elif args.alg == 'LS1':
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
     filename +=  '_' + str(args.seed)
+    '''
+    result = []
+    for i in range(10):
+        task = ThreadClass.MyThread(HillClimbing, (graph, vertices, args.time, args.seed))
+        task.start()
+        sol, trace = task.get_result()
+        result.append(len(sol))
+
+    print(result)
+    '''
     sol, trace = HillClimbing(graph, vertices, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
     
