@@ -3,7 +3,8 @@ import copy
 import random
 from collections import deque, defaultdict 
 from queue import PriorityQueue
-from collections import OrderedDict 
+from collections import OrderedDict
+from Approximate import Approximate
 # import networkx as nx
 # from networkx.algorithms.approximation import vertex_cover
 '''
@@ -74,6 +75,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
     start_time = time.time()
     uncovered_edges = []
     trace = []
+    graph_copy = copy.deepcopy(graph)
 
     # initialize edge weights and dscores of vertices
     edge_weights = {}
@@ -92,7 +94,8 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         confChange[int(v)] = 1
     # construct C greedily until it is a vertex cover
     timer = time.time()
-    C = init_vc(graph, vertices, timer, trace)
+    C, t = Approximate(graph_copy, vertices, cutoff_time)
+    C = list(C)
     # C*=C
     C_solution = C.copy()
     # while elapsed time < cutoff do
@@ -109,6 +112,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                     # choose a vertex u from C with the highest dscore
                     u = i
             # C := C\{u}
+            # print(u)
             C.remove(u)
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
@@ -145,63 +149,10 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
         for x in uncovered_edges:
             edge_weights[x[1]][x[0]] += 1
             dscores[x[0]] += 1
-    # print (len(C))
-    # for i in trace:
-    #     print (i)
-    # print('Solution:', len(C))
     return C, trace
-
-# Heurestic solution found by iteration from max to min degree nodes and removing node if still vertex cover after
-def init_vc(graph, vertices, start_time, trace):
-    # sort the graph based on degree
-    pq = PriorityQueue()
-    for i in graph:
-        pq.put((len(graph[i]), i))
-    VC = []
-    for i in range(len(graph)):
-        index = pq.get()[1]
-        neighbor = graph[index]
-        VC.append((index, neighbor))
-    # VC = VC[::-1] #in descending order
-    # print(VC)
-    uncovered_edges = []
-    ret = list(vertices)
-    # print(ret)
-    for i in VC:
-        overlapped = True
-        for neighbor in i[1]:
-            if neighbor not in ret:
-                overlapped = False
-        if overlapped: ret.remove(str(i[0]))
-    temp = []
-    for i in ret:
-        temp.append(int(i))
-    temp = sorted(temp)
-    return temp
-
-''' 
-def readfile(path):
-    with open(path,'r') as f:
-        first_line = f.readline()
-        num_vertrix = int(first_line.split(" ")[0])
-        num_edge = int(first_line.split(" ")[1])
-        weight = int(first_line.split(" ")[2])
-        graph = defaultdict(list)
-        vertices = set()
-        index = 1
-        for line in f:
-            l = line.split(" ")
-            for i in l:
-                if i  !='\n':
-                    if '\n' in i:
-                        i = i.replace('\n','')
-                    graph[index].append(i)   
-                    vertices.add(i)
-            index += 1 
-    return  graph,vertices, num_edge
     
  
-
+'''
 def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
