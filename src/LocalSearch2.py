@@ -99,9 +99,12 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
     # C*=C
     C_solution = C.copy()
     # while elapsed time < cutoff do
-    while(time.time() - start_time < cutoff_time):
+    counter = 0
+    # temp_length = 0
+    while (time.time() - start_time < cutoff_time) and counter < 50000:
         # if there is no uncovered edge then
         while len(uncovered_edges) == 0:
+            counter = 0
             C_solution = C.copy()
             # remove a vertex with the highest dscore from C
             max_temp = -float('inf')
@@ -117,6 +120,7 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
             removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
             print (len(C))
+        counter += 1
 
         # breaking ties in favor of the oldest one;
         max_temp = -float('inf')
@@ -151,6 +155,27 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             dscores[x[0]] += 1
     return C, trace
     
+def readfile(filename):
+    with open(filename, "r") as f:
+        first_line = f.readline()
+        num_vertrix = int(first_line.split(" ")[0])
+        num_edge = int(first_line.split(" ")[1])
+        weight = int(first_line.split(" ")[2])
+        graph = defaultdict(list)
+        vertices = set()
+        index = 1
+        for line in f:
+            l = line.split(" ")
+            for i in l:
+                if i  !='\n':
+                    graph[index].append(i)   
+                    vertices.add(i)
+            index += 1 
+    return graph,vertices
+filename = '../DATA/jazz.graph'
+graph, vertices = readfile(filename)
+HillClimbing(graph, vertices, 6000, 1045)
+# print ('Solution size is', len(solution))
 
 
 '''
