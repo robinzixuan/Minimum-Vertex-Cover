@@ -13,7 +13,7 @@ def BranchAndBound(graph, vertices, cutoff_time, num_edge):
 
 def EMVC(graph, UB, C,trace, cutoff_time, num_edge):
     while time.time() - start_time < cutoff_time:
-        if |C| + max(DegLB(graph), ClqLB(graph), SatLB(graph)) ≥ len(UB):
+        if |C| + DegLB(graph) ≥ len(UB):
             return vertices, traace
         if graph is empty:
             return Cover, traace
@@ -62,8 +62,7 @@ def DegLB(G):
 
 
 
-def ClqLB(G):
-    pass
+
 
 
 
