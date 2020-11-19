@@ -1,6 +1,10 @@
 import time
-def BranchAndBound(graph, vertices, cutoff_time, seed):
+def BranchAndBound(graph, vertices, cutoff_time):
     start_time = time.time()
+    Cover = set()
+    UB = len(vertices)
+
+
     pass
     
 
@@ -24,5 +28,5 @@ def readfile(filename):
             index += 1 
     return graph,vertices
 graph, vertices = readfile('../DATA/football.graph')
-sol, trace = BranchAndBound(graph,vertices, 3, 5)
+sol, trace = BranchAndBound(graph,vertices, 3)
 '''

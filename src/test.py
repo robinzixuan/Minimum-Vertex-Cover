@@ -69,8 +69,7 @@ if dicts.split('/')[-1] == 'src':
 else:
     dicts = dicts + '/Sol/'
 if args.alg == 'BnB':
-    filename +=  '_' + str(args.seed)
-    sol, trace = BranchAndBound(graph,vertices, args.time, args.seed)
+    sol, trace = BranchAndBound(graph,vertices, args.time)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'Approx':
     sol, trace = Approximate(graph, vertices, args.time)
