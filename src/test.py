@@ -76,7 +76,7 @@ elif args.alg == 'Approx':
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS1':
     filename +=  '_' + str(args.seed)
-    sol, trace = LS1_SA(graph, vertices,number_edge, args.time, args.seed)
+    sol, trace = LS1_SA(graph, vertices,num_edge, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
     filename +=  '_' + str(args.seed)
