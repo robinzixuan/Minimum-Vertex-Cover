@@ -59,7 +59,7 @@ parser.add_argument('-time', action='store', dest = 'time',type=int, help='cutof
 parser.add_argument('-seed', action="store", dest="seed", type=int, help='Random seed')
 
 args = parser.parse_args()
-graph,vertices, number_edge  = readfile(args)
+graph,vertices, num_edge  = readfile(args)
 
 filename = args.data.name.split('/')[-1]
 filename = filename.split('.')[0]

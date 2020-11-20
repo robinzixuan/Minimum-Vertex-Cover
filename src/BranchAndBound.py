@@ -6,14 +6,14 @@ def BranchAndBound(graph, vertices, cutoff_time, num_edge):
     Cover = set()
     UB = vertices
     trace = []
-    Cover, traace = EMVC(graph, UB, C, trace, vertices, cutoff_time, num_edge)
+    Cover, traace = EMVC(graph, UB, Cover, trace, vertices, cutoff_time, num_edge)
     pass
 
 
 
 def EMVC(graph, UB, C,trace, cutoff_time, num_edge):
     while time.time() - start_time < cutoff_time:
-        if |C| + DegLB(graph) ≥ len(UB):
+        if len(C) + DegLB(graph) >= len(UB):
             return vertices, traace
         if graph is empty:
             return Cover, traace
