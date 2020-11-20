@@ -37,6 +37,7 @@ def readfile(args):
     return  graph,vertices, num_edge
 
 
+
 def writefile(dicts, filename, sol, trace):
     sol_filename = dicts + filename +'.sol'
     trace_filename = dicts + filename +'.trace'
