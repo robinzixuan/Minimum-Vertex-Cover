@@ -32,6 +32,9 @@ def BranchAndBound(graph, vertices, cutoff_time, num_edge):
 
         # vertex <- findHighestUncoveredDegree
         vertex, max_degree = findHighestUncoveredDegree(graph, cover)
+        if max_degree is None:
+            # all vertices selected
+            return
         lb = math.ceil(subgraph_num_edge / max_degree)
         if cover_num + lb >= uppper_bound:
             # if current_used_vertex + lb >= current_best then pruning
