@@ -100,29 +100,10 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
             u = finder(C, dscores)
             C.remove(u)
             trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
-<<<<<<< HEAD
             removing(C, graph, vertices, confChange, dscores, uncovered_edges, u)
             print (len(C))
         else:
             counter += 1
-=======
-            removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
-            #print (len(C))
-
-        # breaking ties in favor of the oldest one;
-        max_temp = -float('inf')
-        u = None
-        for i in C:
-            if dscores[i] > max_temp:
-                max_temp = dscores[i]
-                # choose a vertex u from C with the highest dscore
-                u = i
-        # C := C\{u}
-        C.remove(u)
-        # trace.append(str(round(time.time() -start_time ,2)) + ' ' + str(len(C)))
-        removing(C, graph, vertices, confChange, dscores, edge_weights, uncovered_edges, u)
-
->>>>>>> 92c1ff60681b52d86c20ac93647b3d82a313d8ee
 
             u = finder(C, dscores)
             C.remove(u)
@@ -142,7 +123,6 @@ def HillClimbing(graph, vertices, cutoff_time, seed, out_sol = False, out_trace 
                 dscores[x[0]] += 1
     return C, trace
     
-<<<<<<< HEAD
 def readfile(filename):
     with open(filename, "r") as f:
         first_line = f.readline()
@@ -166,9 +146,6 @@ HillClimbing(graph, vertices, 6000, 1045)
 # print ('Solution size is', len(solution))
 
 
-=======
- 
->>>>>>> 92c1ff60681b52d86c20ac93647b3d82a313d8ee
 '''
 def readfile(filename):
     with open(filename, "r") as f:
