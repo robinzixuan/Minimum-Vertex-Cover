@@ -37,6 +37,7 @@ def readfile(args):
     return  graph,vertices, num_edge
 
 
+
 def writefile(dicts, filename, sol, trace):
     sol_filename = dicts + filename +'.sol'
     trace_filename = dicts + filename +'.trace'
@@ -58,7 +59,7 @@ parser.add_argument('-time', action='store', dest = 'time',type=int, help='cutof
 parser.add_argument('-seed', action="store", dest="seed", type=int, help='Random seed')
 
 args = parser.parse_args()
-graph,vertices, number_edge  = readfile(args)
+graph,vertices, num_edge  = readfile(args)
 
 filename = args.data.name.split('/')[-1]
 filename = filename.split('.')[0]
@@ -69,15 +70,14 @@ if dicts.split('/')[-1] == 'src':
 else:
     dicts = dicts + '/Sol/'
 if args.alg == 'BnB':
-    filename +=  '_' + str(args.seed)
-    sol, trace = BranchAndBound(graph,vertices, args.time, args.seed)
+    sol, trace = BranchAndBound(graph,vertices, args.time, num_edge)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'Approx':
     sol, trace = Approximate(graph, vertices, args.time)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS1':
     filename +=  '_' + str(args.seed)
-    sol, trace = LS1_SA(graph, vertices,number_edge, args.time, args.seed)
+    sol, trace = LS1_SA(graph, vertices,num_edge, args.time, args.seed)
     writefile(dicts, filename, sol, trace)
 elif args.alg == 'LS2':
     filename +=  '_' + str(args.seed)
